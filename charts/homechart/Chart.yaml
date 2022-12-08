@@ -1,0 +1,13 @@
+apiVersion: v2
+name: homechart
+version: 1.0.0
+description: Run your household with one simple app. Built by families, for families.
+keywords:
+  - home
+  - homechart
+  - productivity
+  - web
+home: https://homechart.app
+icon: https://homechart.app/homechart.png
+sources:
+  - https://github.com/candiddev/homechart

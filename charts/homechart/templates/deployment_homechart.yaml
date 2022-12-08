@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homechart
+  labels:
+    {{- include "homechart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.homechart.replicas }}
+  selector:
+    matchLabels:
+      app: homechart
+      service: homechart
+  template:
+    metadata:
+      {{- with .Values.homechart.deployment.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: homechart
+        service: homechart
+    spec:
+      {{- with .Values.homechart.deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: homechart
+          env:
+            {{- range $k, $v := .Values.homechart.config.secrets }}
+            - name: {{ $k }}
+              valueFrom:
+                secretKeyRef:
+                  name: homechart
+                  key: {{ $k }}
+            {{- end }}
+            {{- range $k, $v := .Values.homechart.config.values }}
+            - name: {{ $k }}
+              value: {{ $k }}
+            {{- end }}
+            {{- if .Values.postgresql.enabled }}
+            - name: HOMECHART_POSTGRESQL_HOSTNAME
+              value: postgresql
+            - name: HOMECHART_POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homechart
+                  key: HOMECHART_POSTGRESQL_PASSWORD
+            - name: HOMECHART_POSTGRESQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: homechart
+                  key: HOMECHART_POSTGRESQL_USERNAME
+            {{ end }}
+          image: {{ .Values.homechart.deployment.repository }}
+          imagePullPolicy: {{ .Values.homechart.deployment.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api
+              port: http
+          resources:
+            {{- toYaml .Values.homechart.deployment.resources | nindent 12 }}
+      {{- with .Values.homechart.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.homechart.deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.homechart.deployment.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

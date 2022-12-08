@@ -1,0 +1,38 @@
+homechart:
+  config:
+    # Specify environment variables below, either as plain text values or secrets
+    # See https://docs.homechart.app/getting-started/on-your-network/installation/configuration-options/ for options
+    secrets: {}
+    values: {}
+  deployment:
+    affinity: {}
+    annotations: {}
+    imagePullSecrets: []
+    nodeSelector: {}
+    repository: docker.io/candiddev/homechart:latest
+    resources: {}
+    replicas: 1
+    tolerations: {}
+  ingress:
+    annotations: {}
+    host: example.com
+    ingressClassName: ""
+    tls: {}
+
+postgresql:
+  config:
+    password: postgres
+    username: postgres
+  enabled: true
+  statefulset:
+    affinity: {}
+    annotations: {}
+    imagePullPolicy: Always
+    imagePullSecrets: []
+    nodeSelector: {}
+    repository: docker.io/library/postgres:14
+    storageAccessModes:
+      - ReadWriteOnce
+    storageClassName: ""
+    storageSize: 1Gi
+    uid: 100

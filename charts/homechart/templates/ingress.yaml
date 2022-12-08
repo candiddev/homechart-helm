@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homechart
+  labels:
+    {{- include "homechart.labels" . | nindent 4 }}
+  {{- with .Values.homechart.ingress.annotations }}
+  annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.homechart.ingress.ingressClassName }}
+  rules:
+  - host: {{ .Values.homechart.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homechart
+            port:
+              number: 3000
+  {{- with .Values.homechart.ingress.tls }}
+  tls:
+    {{ toYaml . | indent 4 }}
+  {{- end -}}

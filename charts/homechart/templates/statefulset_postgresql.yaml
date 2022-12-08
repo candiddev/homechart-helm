@@ -1,0 +1,72 @@
+{{- if .Values.postgresql.enabled -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql
+  labels:
+    {{- include "homechart.labels" . | nindent 4 }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: homechart
+      service: postgresql
+  serviceName: postgresql
+  replicas: 1
+  template:
+    metadata:
+      {{- with .Values.postgresql.statefulset.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: homechart
+        service: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: username
+          image: {{ .Values.postgresql.statefulset.repository }}
+          imagePullPolicy: {{ .Values.postgresql.statefulset.imagePullPolicy }}
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          volumeMounts:
+            - name: postgresql
+              mountPath: /var/lib/postgresql/data
+      {{- with .Values.postgresql.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.tolerations }}
+      securityContext:
+        fsGroup: {{ .Values.postgresql.statefulset.uid }}
+        runAsGroup: {{ .Values.postgresql.statefulset.uid }}
+        runAsUser: {{ .Values.postgresql.statefulset.uid }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: postgresql
+      spec:
+        accessModes: {{ .Values.postgresql.statefulset.storageAccessModes }}
+        storageClassName: {{ .Values.postgresql.statefulset.storageClassName }}
+        resources:
+          requests:
+            storage: {{ .Values.postgresql.statefulset.storageSize }}
+{{- end }}
