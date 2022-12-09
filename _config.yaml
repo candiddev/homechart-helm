@@ -1,0 +1,6 @@
+theme: jekyll-theme-cayman
+title: Homechart
+description: Run your household with one simple app. Built by families, for families.
+plugins:
+  - jekyll-feed
+

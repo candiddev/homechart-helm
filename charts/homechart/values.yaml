@@ -1,9 +1,11 @@
 homechart:
+  # Configure Homechart specific settings here
   config:
     # Specify environment variables below, either as plain text values or secrets
     # See https://docs.homechart.app/getting-started/on-your-network/installation/configuration-options/ for options
     secrets: {}
     values: {}
+  # Configure Homechart deployment settings here
   deployment:
     affinity: {}
     annotations: {}
@@ -11,18 +13,24 @@ homechart:
     nodeSelector: {}
     repository: docker.io/candiddev/homechart:latest
     resources: {}
+    # You can run multiple instances of Homechart for high availability, it defaults to one.
     replicas: 1
     tolerations: {}
+  # Configure Homechart ingress settings here
   ingress:
     annotations: {}
+    # Change this to the hostname you want to use for Homechart.  Make sure you set HOMECHART_APP_BASEURL to include this under homechart.config.values, e.g. if host is example.com, and you're using TLS, HOMECHART_APP_BASEURL should be https://example.com
     host: example.com
     ingressClassName: ""
+    # Configure TLS settings for the ingress.
     tls: {}
 
 postgresql:
   config:
+    # Change this!
     password: postgres
     username: postgres
+  # Disable PostgreSQL StatefulSet if you're using a shared PostgreSQL instance.
   enabled: true
   statefulset:
     affinity: {}
@@ -33,6 +41,7 @@ postgresql:
     repository: docker.io/library/postgres:14
     storageAccessModes:
       - ReadWriteOnce
+    # Change this if you want the PostgreSQL StatefulSet to use a specific disk type.
     storageClassName: ""
     storageSize: 1Gi
     uid: 100
