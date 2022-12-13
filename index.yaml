@@ -1,0 +1,21 @@
+apiVersion: v1
+entries:
+  homechart:
+  - apiVersion: v2
+    created: "2022-12-13T01:27:38.974136903Z"
+    description: Run your household with one simple app. Built by families, for families.
+    digest: cb1032f8ca6642bab553f7efa4e5bd28f342d365a09f5f1e0b9669b544226c02
+    home: https://homechart.app
+    icon: https://homechart.app/homechart.png
+    keywords:
+    - home
+    - homechart
+    - productivity
+    - web
+    name: homechart
+    sources:
+    - https://github.com/candiddev/homechart
+    urls:
+    - https://github.com/candiddev/homechart-helm/releases/download/homechart-1.0.0/homechart-1.0.0.tgz
+    version: 1.0.0
+generated: "2022-12-13T01:27:38.974143103Z"
