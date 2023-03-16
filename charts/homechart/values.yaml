@@ -11,7 +11,7 @@ homechart:
     annotations: {}
     imagePullSecrets: []
     nodeSelector: {}
-    repository: docker.io/candiddev/homechart:latest
+    repository: ghcr.io/candiddev/homechart:latest
     resources: {}
     # You can run multiple instances of Homechart for high availability, it defaults to one.
     replicas: 1
