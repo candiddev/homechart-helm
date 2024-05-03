@@ -39,18 +39,18 @@ spec:
               value: {{ $k }}
             {{- end }}
             {{- if .Values.postgresql.enabled }}
-            - name: HOMECHART_POSTGRESQL_HOSTNAME
+            - name: HOMECHART_postgresql_hostname
               value: postgresql
-            - name: HOMECHART_POSTGRESQL_PASSWORD
+            - name: HOMECHART_postgresql_password
               valueFrom:
                 secretKeyRef:
                   name: homechart
-                  key: HOMECHART_POSTGRESQL_PASSWORD
-            - name: HOMECHART_POSTGRESQL_USERNAME
+                  key: HOMECHART_postgresql_password
+            - name: HOMECHART_postgresql_username
               valueFrom:
                 secretKeyRef:
                   name: homechart
-                  key: HOMECHART_POSTGRESQL_USERNAME
+                  key: HOMECHART_postgresql_username
             {{ end }}
           image: {{ .Values.homechart.deployment.repository }}
           imagePullPolicy: {{ .Values.homechart.deployment.imagePullPolicy }}
