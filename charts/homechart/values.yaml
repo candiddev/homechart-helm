@@ -2,7 +2,7 @@ homechart:
   # Configure Homechart specific settings here
   config:
     # Specify environment variables below, either as plain text values or secrets
-    # See https://docs.homechart.app/getting-started/on-your-network/installation/configuration-options/ for options
+    # See https://homechart.app/docs/references/config/ for options
     secrets: {}
     values: {}
   # Configure Homechart deployment settings here
